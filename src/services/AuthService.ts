@@ -19,7 +19,6 @@ export const signout = catchAsyncError(async () => {
 
 export const signup = catchAsyncError(
   async (email: string, password: string) => {
-    console.log(email, password);
     return await createUserWithEmailAndPassword(auth, email, password);
   }
 );
