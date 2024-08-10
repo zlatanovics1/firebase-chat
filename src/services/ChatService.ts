@@ -15,19 +15,21 @@ import { catchAsyncError } from "../utils/catchAsyncError";
 import { type Message } from "../types/firestore";
 
 const messageCollection = collection(db, "messages");
-export const getMessagesFirestore = catchAsyncError<Message[]>(async () => {
-  const q = query(messageCollection, orderBy("createdAt", "asc"));
-  const snapshot = await getDocs(q);
-  const messages = snapshot.docs.map((doc) => ({
-    ...doc.data(),
-    id: doc.id,
-  })) as Message[];
+export const getMessagesFirestore = catchAsyncError<Message[], void>(
+  async () => {
+    const q = query(messageCollection, orderBy("createdAt", "asc"));
+    const snapshot = await getDocs(q);
+    const messages = snapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    })) as Message[];
 
-  return messages;
-});
+    return messages;
+  }
+);
 
-export const sendMessageFirestore = catchAsyncError<void>(
-  async (message: Message) => {
+export const sendMessageFirestore = catchAsyncError<void, Message>(
+  async (message) => {
     await addDoc(messageCollection, {
       ...message,
       createdAt: { seconds: new Date().getTime() / 1000 },
@@ -43,14 +45,14 @@ export const listenForMessages = (dispatcher: () => void) => {
   return unsub;
 };
 
-export const likeMessage = catchAsyncError<void>(async (id: string) => {
+export const likeMessage = catchAsyncError<void, string>(async (id) => {
   const docToUpdate = doc(db, "messages", id);
   await updateDoc(docToUpdate, {
     likes: increment(1),
   });
 });
 
-export const deleteMessage = catchAsyncError<void>(async (id: string) => {
+export const deleteMessage = catchAsyncError<void, string>(async (id) => {
   const docToDelete = doc(db, "messages", id);
   await deleteDoc(docToDelete);
 });
