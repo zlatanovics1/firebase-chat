@@ -8,10 +8,12 @@ export function useCurrentUser() {
   const dispatch = useAppDispatch();
 
   useEffect(function () {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
+        const tokenRes = await currentUser.getIdTokenResult();
         return dispatch(
           setUser({
+            moderator: Boolean(tokenRes.claims.moderator),
             displayName: currentUser.displayName || "",
             email: currentUser.email!,
             id: currentUser.uid,

@@ -21,13 +21,14 @@ export default function Chat() {
   return (
     <>
       {user.isLogedIn && <MessageInput />}
-      <ul className="flex flex-col gap-5 items-start px-10 mt-32">
+      <ul className="flex flex-col gap-5 mb-20 items-start px-10 mt-32">
         {messages.length &&
           messages.map((message) => (
             <Message
               key={message.id}
               message={message}
               sentByMe={user.id === message.user_id}
+              moderator={user.moderator}
             />
           ))}
       </ul>

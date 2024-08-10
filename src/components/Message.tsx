@@ -2,14 +2,16 @@ import { BiLike } from "react-icons/bi";
 import { type Message } from "../types/firestore";
 import { FaUserCircle } from "react-icons/fa";
 import { deleteMessage, likeMessage } from "../services/ChatService";
-import { MdDelete, MdDeleteOutline } from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
 
 export default function Message({
   message,
   sentByMe,
+  moderator,
 }: {
   message: Message;
   sentByMe: boolean;
+  moderator: boolean;
 }) {
   const userSentLIClass = sentByMe
     ? "text-white flex-row-reverse self-end"
@@ -40,10 +42,12 @@ export default function Message({
         />
       </div>
       <p>{messageSentAt}</p>
-      <MdDeleteOutline
-        onClick={handleDelete}
-        className="w-6 h-6 text-red-400 cursor-pointer"
-      />
+      {(sentByMe || moderator) && (
+        <MdDeleteOutline
+          onClick={handleDelete}
+          className="w-6 h-6 text-red-400 cursor-pointer"
+        />
+      )}
     </li>
   );
 }
