@@ -1,6 +1,8 @@
 /* eslint-disable quotes */
+/* eslint-disable */
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { log } from "firebase-functions/logger";
 
 admin.initializeApp();
 
@@ -35,6 +37,38 @@ exports.addModeratorRole = functions.https.onCall(async (data, context) => {
   };
 });
 
-exports.addCace = functions.https.onCall(async (data, context) => {
-  await grantModeratorRole("strahinja@gmail.com");
+exports.addUserOnCreate = functions.auth.user().onCreate(async (user) => {
+  await admin.firestore().collection("users").doc(user.uid).set({
+    email: user.email,
+  });
 });
+
+exports.notifyNewFollower = functions.firestore
+  .document("followers/{id}")
+  .onCreate(async (snapshot, context) => {
+    const followedId = snapshot.data().followedId;
+    const followerId = snapshot.data().followerId;
+
+    const follower = await admin.auth().getUser(followerId);
+    const followedUserTokens = await admin
+      .firestore()
+      .collection(`users/${followedId}/tokens`)
+      .get();
+    const tokens = followedUserTokens.docs.map((doc) => doc.data().token);
+
+    const payload = {
+      notification: {
+        title: "New follower",
+        body: `${follower.email?.split("@").at(0)} just followed you!`,
+      },
+      data: {
+        followedAt: new Date().toDateString(),
+      },
+      tokens,
+    };
+
+    await admin.messaging().sendEachForMulticast(payload);
+    // await admin.messaging.log(
+    //   `New follower: ${followerUser.email} is now following ${followedUser.email}.`
+    // );
+  });

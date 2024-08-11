@@ -7,3 +7,9 @@ export interface Message {
   id: string;
   createdAt: Timestamp;
 }
+
+export interface User {
+  email: string;
+  id: string;
+  notificationTokens?: string[];
+}
