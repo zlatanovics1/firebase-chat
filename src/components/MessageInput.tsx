@@ -3,6 +3,7 @@ import Button from "./Button";
 import { useAppSelector } from "../redux/store";
 import { getUser } from "../redux/slices/userSlice";
 import { sendMessageFirestore } from "../services/ChatService";
+import { toast } from "react-toastify";
 
 export default function MessageInput() {
   const [message, setMessage] = useState("");
