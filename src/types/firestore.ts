@@ -13,3 +13,10 @@ export interface User {
   id: string;
   notificationTokens?: string[];
 }
+
+export interface Booking {
+  id: string;
+  issuedAt: Timestamp;
+  userId: string;
+  description: string;
+  user: { name: string }[];
