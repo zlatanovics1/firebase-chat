@@ -4,6 +4,7 @@ export interface UserInput {
   displayName: string;
   email: string;
   id: string;
+  moderator: boolean;
 }
 
 type UserState = UserInput & { isLogedIn: boolean };
@@ -13,6 +14,7 @@ const initialState: UserState = {
   displayName: "",
   email: "",
   id: "",
+  moderator: false,
 };
 
 const userSlice = createSlice({
@@ -23,6 +25,7 @@ const userSlice = createSlice({
       // state = { ...action.payload, isLogedIn: true };
       state.displayName = action.payload.displayName;
       state.email = action.payload.email;
+      state.moderator = action.payload.moderator;
       state.id = action.payload.id;
       state.isLogedIn = true;
     },

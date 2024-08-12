@@ -1,12 +1,23 @@
 import Auth from "./components/Auth";
 import Chat from "./components/Chat";
+import Callane from "./components/Callane";
+import UsersGrid from "./components/UsersGrid";
+import { ToastContainer } from "react-toastify";
+import useFCM from "./hooks/useFCM";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
+  useFCM();
   return (
-    <section className="py-10 px-5 bg-gray-300 h-[200vh] ">
-      <Auth />
-      <Chat />
-    </section>
+    <>
+      <section className="py-10 px-5 bg h-[200vh] ">
+        <Callane />
+        <Auth />
+        <Chat />
+        <UsersGrid />
+      </section>
+      <ToastContainer />
+    </>
   );
 }
 
