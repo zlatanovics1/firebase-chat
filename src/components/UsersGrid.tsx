@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getNotFollowedUsers, getUsers } from "../services/UsersService";
+import { getNotFollowedUsers } from "../services/UsersService";
 import UserCard from "./UserCard";
 
 export default function UsersGrid() {

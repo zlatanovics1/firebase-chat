@@ -5,6 +5,7 @@ import UsersGrid from "./components/UsersGrid";
 import { ToastContainer } from "react-toastify";
 import useFCM from "./hooks/useFCM";
 import "react-toastify/dist/ReactToastify.css";
+import UploadImage from "./components/UploadImage";
 
 function App() {
   useFCM();
@@ -15,6 +16,7 @@ function App() {
         <Auth />
         <Chat />
         <UsersGrid />
+        <UploadImage />
       </section>
       <ToastContainer />
     </>
